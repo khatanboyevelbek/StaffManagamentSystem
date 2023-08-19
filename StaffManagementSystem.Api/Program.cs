@@ -1,6 +1,8 @@
 
 using Microsoft.EntityFrameworkCore;
 using StaffManagementSystem.Api.Infrastructure;
+using StaffManagementSystem.Api.Infrastructure.IRepositories;
+using StaffManagementSystem.Api.Infrastructure.Repositories;
 
 namespace StaffManagementSystem.Api
 {
@@ -18,6 +20,7 @@ namespace StaffManagementSystem.Api
                 string connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
                 options.UseNpgsql(connectionString);
             });
+            RegisterRepositories(builder.Services);
 
             var app = builder.Build();
 
@@ -31,6 +34,14 @@ namespace StaffManagementSystem.Api
             app.UseAuthorization();
 
             app.Run();
+        }
+
+        private static void RegisterRepositories(IServiceCollection services)
+        {
+            services.AddTransient<IUserRepository, UserRepository>();
+            services.AddTransient<IAdminRepository, AdminRepository>();
+            services.AddTransient<IDirectorRepository, DirectorRepository>();
+            services.AddTransient<IKadrRepository, KadrRepository>();
         }
     }
 }
