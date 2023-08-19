@@ -1,4 +1,7 @@
 
+using Microsoft.EntityFrameworkCore;
+using StaffManagementSystem.Api.Infrastructure;
+
 namespace StaffManagementSystem.Api
 {
     public class Program
@@ -10,6 +13,11 @@ namespace StaffManagementSystem.Api
             builder.Services.AddAuthorization();
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
+            builder.Services.AddDbContext<AppDbContext>(options =>
+            {
+                string connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+                options.UseNpgsql(connectionString);
+            });
 
             var app = builder.Build();
 
