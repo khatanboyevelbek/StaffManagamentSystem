@@ -1,13 +1,11 @@
 ﻿using FluentValidation;
-using Microsoft.EntityFrameworkCore;
 using StaffManagementSystem.Api.Domain.DTOs;
-using StaffManagementSystem.Api.Infrastructure.IRepositories;
 
 namespace StaffManagementSystem.Api.Services.Vaidations
 {
-    public class AdminCreateDtoValidation : AbstractValidator<CreateAdminDto>
+    public class KadrCreateDtoValidation : AbstractValidator<CreateKadrDto>
     {
-        public AdminCreateDtoValidation(IAdminRepository adminRepository) 
+        public KadrCreateDtoValidation() 
         {
             RuleFor(a => a.Firstname)
                 .NotNull()

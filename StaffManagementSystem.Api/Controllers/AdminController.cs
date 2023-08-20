@@ -32,60 +32,8 @@ namespace StaffManagementSystem.Api.Controllers
             this.updateValidator = updateValidator;
         }
 
-        [AllowAnonymous]
-        [HttpPost]
-        [Route("register")]
-
-        public async Task<ActionResult> RegisterAdminAsync(CreateAdminDto createAdminDto)
-        {
-            try
-            {
-                if (createAdminDto is null)
-                {
-                    throw new ArgumentNullException(nameof(createAdminDto));
-                }
-
-                ValidationResult validationResult = await this.createValidator.ValidateAsync(createAdminDto);
-                var invalidException = new InvalidException("Validation error occured");
-
-                foreach (var error in validationResult.Errors)
-                {
-                    invalidException.UpsertDataList(error.PropertyName, error.ErrorMessage);
-                }
-
-                invalidException.ThrowIfContainsErrors();
-
-                var admin = new Admin
-                {
-                    Id = Guid.NewGuid(),
-                    Firstname = createAdminDto.Firstname,
-                    Lastname = createAdminDto.Lastname,
-                    Email = createAdminDto.Email,
-                    Password = this.passwordSecurity.Encrypt(createAdminDto.Password),
-                    Role = Roles.Admin
-                };
-
-                var result = await this.adminRepository.InsertAsync(admin);
-
-                return Created(result);
-            }
-            catch (ArgumentNullException exception)
-            {
-                return BadRequest(exception);
-            }
-            catch (InvalidException exception)
-            {
-                return BadRequest(exception);
-            }
-            catch (Exception exception)
-            {
-                return InternalServerError(exception);
-            }
-        }
-
-        [AllowAnonymous]
+        [Authorize(Roles = nameof(Roles.Admin))]
         [HttpPut]
-
         public async Task<ActionResult> UpdateAdminAsync(UpdateAdminDto updateAdminDto)
         {
             try
@@ -128,17 +76,21 @@ namespace StaffManagementSystem.Api.Controllers
             }
         }
 
-        [AllowAnonymous]
-        [HttpDelete]
+        [Authorize(Roles = nameof(Roles.Admin))]
+        [HttpGet]
 
-        public async Task<ActionResult> DeleteAdminAsync(Guid id)
+        public async Task<ActionResult> GetAdminById(Guid id)
         {
             try
             {
                 var entity = await this.adminRepository.GetByIdAsync(id);
-                await this.adminRepository.DeleteAsync(entity);
 
-                return NoContent();
+                if (entity is null)
+                {
+                    return NotFound();
+                }
+
+                return Ok(entity);
             }
             catch (Exception exception)
             {

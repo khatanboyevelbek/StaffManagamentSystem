@@ -2,13 +2,19 @@
 using Microsoft.EntityFrameworkCore;
 using StaffManagementSystem.Api.Domain.DTOs;
 using StaffManagementSystem.Api.Infrastructure.IRepositories;
+using StaffManagementSystem.Api.Infrastructure.Repositories;
 
 namespace StaffManagementSystem.Api.Services.Vaidations
 {
-    public class AdminCreateDtoValidation : AbstractValidator<CreateAdminDto>
+    public class DirectorUpdateDtoValidation : AbstractValidator<UpdateDirectorDto>
     {
-        public AdminCreateDtoValidation(IAdminRepository adminRepository) 
+        public DirectorUpdateDtoValidation(IDirectorRepository directorRepository) 
         {
+            RuleFor(a => a.Id)
+            .MustAsync(async (request, id, token) =>
+                    await directorRepository.GetAll().AnyAsync(s => s.Id == request.Id, token))
+                .WithMessage("Director with this id is not found");
+
             RuleFor(a => a.Firstname)
                 .NotNull()
                 .NotEmpty()
@@ -28,7 +34,7 @@ namespace StaffManagementSystem.Api.Services.Vaidations
             RuleFor(a => a.Password)
                 .NotEmpty()
                 .Must(p => p.Length >= 8)
-                .WithMessage("Password must conatin at least 8 characters");
+                .WithMessage("Password must conatin at leastr 8 characters");
         }
     }
 }

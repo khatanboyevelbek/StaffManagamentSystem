@@ -1,13 +1,11 @@
 ﻿using FluentValidation;
-using Microsoft.EntityFrameworkCore;
 using StaffManagementSystem.Api.Domain.DTOs;
-using StaffManagementSystem.Api.Infrastructure.IRepositories;
 
 namespace StaffManagementSystem.Api.Services.Vaidations
 {
-    public class AdminCreateDtoValidation : AbstractValidator<CreateAdminDto>
+    public class DirectorCreateDtoValidation : AbstractValidator<CreateDirectorDto>
     {
-        public AdminCreateDtoValidation(IAdminRepository adminRepository) 
+        public DirectorCreateDtoValidation() 
         {
             RuleFor(a => a.Firstname)
                 .NotNull()
@@ -28,7 +26,7 @@ namespace StaffManagementSystem.Api.Services.Vaidations
             RuleFor(a => a.Password)
                 .NotEmpty()
                 .Must(p => p.Length >= 8)
-                .WithMessage("Password must conatin at least 8 characters");
+                .WithMessage("Password must conatin at leastr 8 characters");
         }
     }
 }

@@ -5,10 +5,15 @@ using StaffManagementSystem.Api.Infrastructure.IRepositories;
 
 namespace StaffManagementSystem.Api.Services.Vaidations
 {
-    public class AdminCreateDtoValidation : AbstractValidator<CreateAdminDto>
+    public class KadrUpdateDtoValidation : AbstractValidator<UpdateKadrDto>
     {
-        public AdminCreateDtoValidation(IAdminRepository adminRepository) 
+        public KadrUpdateDtoValidation(IKadrRepository kadrRepository) 
         {
+            RuleFor(a => a.Id)
+                .MustAsync(async (request, id, token) =>
+                    await kadrRepository.GetAll().AnyAsync(s => s.Id == request.Id, token))
+                .WithMessage("Kadr with this id is not found");
+
             RuleFor(a => a.Firstname)
                 .NotNull()
                 .NotEmpty()
@@ -28,7 +33,7 @@ namespace StaffManagementSystem.Api.Services.Vaidations
             RuleFor(a => a.Password)
                 .NotEmpty()
                 .Must(p => p.Length >= 8)
-                .WithMessage("Password must conatin at least 8 characters");
+                .WithMessage("Password must conatin at leastr 8 characters");
         }
     }
 }

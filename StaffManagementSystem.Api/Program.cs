@@ -1,6 +1,5 @@
 
 using FluentValidation;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using StaffManagementSystem.Api.Domain.DTOs;
 using StaffManagementSystem.Api.Infrastructure;
@@ -8,6 +7,7 @@ using StaffManagementSystem.Api.Infrastructure.IRepositories;
 using StaffManagementSystem.Api.Infrastructure.Repositories;
 using StaffManagementSystem.Api.Services.Security;
 using StaffManagementSystem.Api.Services.Vaidations;
+using StaffManagementSystem.Api.Services.EmailService;
 
 namespace StaffManagementSystem.Api
 {
@@ -57,7 +57,14 @@ namespace StaffManagementSystem.Api
         {
             services.AddTransient<IValidator<CreateAdminDto>, AdminCreateDtoValidation>();
             services.AddTransient<IValidator<UpdateAdminDto>, AdminUpdateDtoValidation>();
+            services.AddTransient<IValidator<CreateUserDto>, UserCreateDtoValidation>();
+            services.AddTransient<IValidator<UpdateUserDto>, UserUpdateDtoValidation>();
+            services.AddTransient<IValidator<CreateKadrDto>, KadrCreateDtoValidation>();
+            services.AddTransient<IValidator<UpdateKadrDto>, KadrUpdateDtoValidation>();
+            services.AddTransient<IValidator<CreateDirectorDto>, DirectorCreateDtoValidation>();
+            services.AddTransient<IValidator<UpdateDirectorDto>, DirectorUpdateDtoValidation>();
             services.AddScoped<IPasswordSecurity, PasswordSecurity>();
+            services.AddTransient<IEmailSender, EmailSender>();
         }
     }
 }
