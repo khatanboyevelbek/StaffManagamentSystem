@@ -32,6 +32,7 @@ namespace StaffManagementSystem.Api.Controllers
             this.updateValidator = updateValidator;
         }
 
+        [AllowAnonymous]
         [Authorize(Roles = nameof(Roles.Admin))]
         [HttpPut]
         public async Task<ActionResult> UpdateAdminAsync(UpdateAdminDto updateAdminDto)
@@ -76,6 +77,7 @@ namespace StaffManagementSystem.Api.Controllers
             }
         }
 
+        [AllowAnonymous]
         [Authorize(Roles = nameof(Roles.Admin))]
         [HttpGet]
 
