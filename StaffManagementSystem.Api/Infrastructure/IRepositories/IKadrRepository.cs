@@ -11,5 +11,6 @@ namespace StaffManagementSystem.Api.Infrastructure.IRepositories
         IQueryable<Kadr> GetAll();
         IQueryable<Kadr> GetSelected(Expression<Func<Kadr, bool>> expression);
         Task<Kadr> GetByIdAsync(Guid id);
+        Task<Kadr> GetKadrByEmailAsync(string email);
     }
 }

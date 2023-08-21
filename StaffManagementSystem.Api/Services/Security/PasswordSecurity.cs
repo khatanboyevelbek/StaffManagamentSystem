@@ -1,5 +1,4 @@
-﻿using System.Diagnostics.Eventing.Reader;
-using BCrypt.Net;
+﻿using BCrypt.Net;
 
 namespace StaffManagementSystem.Api.Services.Security
 {
@@ -7,12 +6,12 @@ namespace StaffManagementSystem.Api.Services.Security
     {
         public string Encrypt(string password)
         {
-            return BCrypt.Net.BCrypt.EnhancedHashPassword(password, workFactor: 13, HashType.SHA512);
+            return BCrypt.Net.BCrypt.HashPassword(password, BCrypt.Net.BCrypt.GenerateSalt());
         }
 
         public bool Verify(string password, string passwordHash)
         {
-            return BCrypt.Net.BCrypt.EnhancedVerify(password, passwordHash, HashType.SHA512);
+            return BCrypt.Net.BCrypt.Verify(password, passwordHash);
         }
     }
 }

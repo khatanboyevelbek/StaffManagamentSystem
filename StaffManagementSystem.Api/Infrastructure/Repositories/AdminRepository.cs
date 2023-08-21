@@ -23,6 +23,9 @@ namespace StaffManagementSystem.Api.Infrastructure.Repositories
             await this.context.SaveChangesAsync();
         }
 
+        public async Task<Admin> GetAdminByEmailAsync(string email) =>
+            await this.dbSet.FirstOrDefaultAsync(a => a.Email == email);
+
         public IQueryable<Admin> GetAll() => this.dbSet;
 
         public async Task<Admin> GetByIdAsync(Guid id) => await this.dbSet.FindAsync(id);

@@ -75,6 +75,7 @@ namespace StaffManagementSystem.Api
             services.AddTransient<IValidator<UpdateDirectorDto>, DirectorUpdateDtoValidation>();
             services.AddScoped<IPasswordSecurity, PasswordSecurity>();
             services.AddTransient<IEmailSender, EmailSender>();
+            services.AddTransient<IAuthManager, AuthManager>();
         }
 
         private static void ConfigureCORS(IServiceCollection services)

@@ -27,6 +27,9 @@ namespace StaffManagementSystem.Api.Infrastructure.Repositories
 
         public async Task<Director> GetByIdAsync(Guid id) => await this.dbSet.FindAsync(id);
 
+        public async Task<Director> GetDirectorByEmailAsync(string email) =>
+            await this.dbSet.FirstOrDefaultAsync(a => a.Email == email);
+
         public IQueryable<Director> GetSelected(Expression<Func<Director, bool>> expression) =>
             this.dbSet.Where(expression);
 

@@ -30,6 +30,9 @@ namespace StaffManagementSystem.Api.Infrastructure.Repositories
         public IQueryable<User> GetSelected(Expression<Func<User, bool>> expression) =>
             this.dbSet.Where(expression);
 
+        public async Task<User> GetUserByEmailAsync(string email) =>
+            await this.dbSet.FirstOrDefaultAsync(a => a.Email == email);
+
         public async Task<User> InsertAsync(User user)
         {
             var insertedEntity = await this.dbSet.AddAsync(user);

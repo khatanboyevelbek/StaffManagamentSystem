@@ -27,6 +27,9 @@ namespace StaffManagementSystem.Api.Infrastructure.Repositories
 
         public async Task<Kadr> GetByIdAsync(Guid id) => await this.dbSet.FindAsync(id);
 
+        public async Task<Kadr> GetKadrByEmailAsync(string email) =>
+            await this.dbSet.FirstOrDefaultAsync(a => a.Email == email);
+
         public IQueryable<Kadr> GetSelected(Expression<Func<Kadr, bool>> expression) =>
             this.dbSet.Where(expression);
 
